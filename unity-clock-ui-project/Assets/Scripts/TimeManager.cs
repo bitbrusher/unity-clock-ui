@@ -1,59 +1,55 @@
 using UnityEngine;
 
-public class TimeManager : MonoBehaviour
+public class TimeManager : MonoBehaviour, ITimeManager
 {
-    public const int hoursInDay = 24, minutesInHour = 60;
+    private const int HoursInDay = 24;
+    private const int MinutesInHour = 60;
 
     public float dayDuration = 30f;
 
-    float totalTime = 0;
-    float currentTime = 0;
+    private float _totalTime = 0;
+    private float _currentTime = 0;
 
     public float nightDuration = .4f;
     public float sunriseHour = 6;
 
+    private DigitalClockStringBuilder _12HourDigitalClockStringBuilder;
+    private DigitalClockStringBuilder _24HourDigitalClockStringBuilder;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        totalTime += Time.deltaTime;
-        currentTime = totalTime % dayDuration;
-        Debug.LogError(GetHour());
+        _12HourDigitalClockStringBuilder = new DigitalClockStringBuilder(this, true);
+        _24HourDigitalClockStringBuilder = new DigitalClockStringBuilder(this, false);
+    }
+
+    private void Update()
+    {
+        _totalTime += Time.deltaTime;
+        _currentTime = _totalTime % dayDuration;
     }
 
     public float GetHour()
     {
-        return currentTime * hoursInDay / dayDuration;
+        return _currentTime * HoursInDay / dayDuration;
     }
 
     public float GetMinutes()
     {
-        return (currentTime * hoursInDay * minutesInHour / dayDuration)%minutesInHour;
+        return (_currentTime * HoursInDay * MinutesInHour / dayDuration) % MinutesInHour;
     }
 
-    public string Clock24Hour()
+    public DigitalClockStringBuilderResult Get24HourDigitalClock()
     {
-        //00:00
-        return Mathf.FloorToInt(GetHour()).ToString("00") + ":" + Mathf.FloorToInt(GetMinutes()).ToString("00");
+        return _24HourDigitalClockStringBuilder.GetDisplayText();
     }
 
-    public string Clock12Hour()
+    public DigitalClockStringBuilderResult Get12HourDigitalClock()
     {
-        int hour = Mathf.FloorToInt(GetHour());
-        string abbreviation = "AM";
-
-        if (hour >= 12)
-        {
-            abbreviation = "PM";
-            hour -= 12;
-        }
-
-        if (hour == 0) hour = 12;
-
-        return hour.ToString("00") + ":" + Mathf.FloorToInt(GetMinutes()).ToString("00") + " " + abbreviation;
+        return _12HourDigitalClockStringBuilder.GetDisplayText();
     }
+
     public float GetSunsetHour()
     {
-        return (sunriseHour + (1 - nightDuration) * hoursInDay) % hoursInDay;
+        return (sunriseHour + (1 - nightDuration) * HoursInDay) % HoursInDay;
     }
 }

@@ -1,26 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AnalogClock : MonoBehaviour
 {
-    TimeManager tm;
+    private TimeManager _timeManager;
 
     public RectTransform minuteHand;
     public RectTransform hourHand;
 
-    const float hoursToDegrees = 360 / 12, minutesToDegrees = 360 / 60;
+    private const float HoursToDegrees = 360f / 12f;
+    private const float MinutesToDegrees = 360f / 60f;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        tm = FindObjectOfType<TimeManager>();
+        _timeManager = FindObjectOfType<TimeManager>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        hourHand.rotation = Quaternion.Euler(0,0, -tm.GetHour()*hoursToDegrees);
-        minuteHand.rotation = Quaternion.Euler(0, 0, -tm.GetMinutes() * minutesToDegrees);
+        hourHand.rotation = Quaternion.Euler(0, 0, -_timeManager.GetHour() * HoursToDegrees);
+        minuteHand.rotation = Quaternion.Euler(0, 0, -_timeManager.GetMinutes() * MinutesToDegrees);
     }
 }

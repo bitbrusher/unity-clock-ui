@@ -3,24 +3,24 @@ using UnityEngine;
 
 public class DigitalClock : MonoBehaviour
 {
-    TimeManager tm;
-    TMP_Text display;
+    private TimeManager _timeManager;
+    private TMP_Text _displayText;
 
     public bool _24HourClock = true;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        tm = FindObjectOfType<TimeManager>();
-        display = GetComponentInChildren<TMP_Text>();
+        _timeManager = FindObjectOfType<TimeManager>();
+        _displayText = GetComponentInChildren<TMP_Text>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if(_24HourClock)
-            display.text = tm.Clock24Hour();
-        else
-            display.text = tm.Clock12Hour();
+        var clockFormattedResult = _24HourClock ? _timeManager.Get24HourDigitalClock() : _timeManager.Get12HourDigitalClock();
+
+        if (clockFormattedResult.HasChanged)
+        {
+            _displayText.SetCharArray(clockFormattedResult.FormattedClockInfo);
+        }
     }
 }
