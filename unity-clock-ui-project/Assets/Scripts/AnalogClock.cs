@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AnalogClock : MonoBehaviour
 {
-    private TimeManager _timeManager;
+    private ITimeManager _timeManager;
 
     public RectTransform minuteHand;
     public RectTransform hourHand;
@@ -12,7 +12,7 @@ public class AnalogClock : MonoBehaviour
 
     private void Start()
     {
-        _timeManager = FindObjectOfType<TimeManager>();
+        _timeManager = FindObjectOfType<TimeManagerMonoBehaviour>().GetTimeManager();
     }
 
     private void Update()

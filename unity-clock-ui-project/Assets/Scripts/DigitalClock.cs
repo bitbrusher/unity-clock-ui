@@ -3,20 +3,21 @@ using UnityEngine;
 
 public class DigitalClock : MonoBehaviour
 {
-    private TimeManager _timeManager;
+    private ITimeManager _timeManager;
     private TMP_Text _displayText;
 
-    public bool _24HourClock = true;
+    public bool is12HourClock = true;
 
     private void Start()
     {
-        _timeManager = FindObjectOfType<TimeManager>();
+        _timeManager = FindObjectOfType<TimeManagerMonoBehaviour>().GetTimeManager();
+        
         _displayText = GetComponentInChildren<TMP_Text>();
     }
 
     private void Update()
     {
-        var clockFormattedResult = _24HourClock ? _timeManager.Get24HourDigitalClock() : _timeManager.Get12HourDigitalClock();
+        var clockFormattedResult = is12HourClock ? _timeManager.Get12HourDigitalClock() : _timeManager.Get24HourDigitalClock();
 
         if (clockFormattedResult.HasChanged)
         {

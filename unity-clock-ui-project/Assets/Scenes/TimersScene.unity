@@ -483,7 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdd55595bff72b44f8d2452773ec7267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _24HourClock: 0
+  is12HourClock: 1
 --- !u!114 &643989610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1082,12 +1082,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1723964151}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aefd36834a986bc46988f57a4730bcac, type: 3}
+  m_Script: {fileID: 11500000, guid: 33b469063b8c41979a01ba21db57bb57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dayDuration: 15
-  nightDuration: 0.4
-  sunriseHour: 6
+  timeManagerConfiguration:
+    dayDuration: 15
+    nightDuration: 0.4
+    sunriseHour: 6
 --- !u!4 &1723964153
 Transform:
   m_ObjectHideFlags: 0
@@ -1191,7 +1192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdd55595bff72b44f8d2452773ec7267, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _24HourClock: 1
+  is12HourClock: 0
 --- !u!1 &2115381006
 GameObject:
   m_ObjectHideFlags: 0

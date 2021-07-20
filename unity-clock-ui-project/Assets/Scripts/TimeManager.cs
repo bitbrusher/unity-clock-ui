@@ -1,41 +1,37 @@
-using UnityEngine;
-
-public class TimeManager : MonoBehaviour, ITimeManager
+public class TimeManager : ITimeManager
 {
     private const int HoursInDay = 24;
     private const int MinutesInHour = 60;
 
-    public float dayDuration = 30f;
-
     private float _totalTime = 0;
     private float _currentTime = 0;
 
-    public float nightDuration = .4f;
-    public float sunriseHour = 6;
+    private readonly TimeManagerConfiguration _timeManagerConfiguration;
+    private readonly DigitalClockStringBuilder _12HourDigitalClockStringBuilder;
+    private readonly DigitalClockStringBuilder _24HourDigitalClockStringBuilder;
 
-    private DigitalClockStringBuilder _12HourDigitalClockStringBuilder;
-    private DigitalClockStringBuilder _24HourDigitalClockStringBuilder;
-
-    private void Start()
+    public TimeManager(TimeManagerConfiguration timeManagerConfiguration)
     {
+        _timeManagerConfiguration = timeManagerConfiguration;
+
         _12HourDigitalClockStringBuilder = new DigitalClockStringBuilder(this, true);
         _24HourDigitalClockStringBuilder = new DigitalClockStringBuilder(this, false);
     }
 
-    private void Update()
+    public void Update(float deltaTime)
     {
-        _totalTime += Time.deltaTime;
-        _currentTime = _totalTime % dayDuration;
+        _totalTime += deltaTime;
+        _currentTime = _totalTime % _timeManagerConfiguration.dayDuration;
     }
 
     public float GetHour()
     {
-        return _currentTime * HoursInDay / dayDuration;
+        return _currentTime * HoursInDay / _timeManagerConfiguration.dayDuration;
     }
 
     public float GetMinutes()
     {
-        return (_currentTime * HoursInDay * MinutesInHour / dayDuration) % MinutesInHour;
+        return (_currentTime * HoursInDay * MinutesInHour / _timeManagerConfiguration.dayDuration) % MinutesInHour;
     }
 
     public DigitalClockStringBuilderResult Get24HourDigitalClock()
@@ -50,6 +46,6 @@ public class TimeManager : MonoBehaviour, ITimeManager
 
     public float GetSunsetHour()
     {
-        return (sunriseHour + (1 - nightDuration) * HoursInDay) % HoursInDay;
+        return (_timeManagerConfiguration.sunriseHour + (1 - _timeManagerConfiguration.nightDuration) * HoursInDay) % HoursInDay;
     }
 }
