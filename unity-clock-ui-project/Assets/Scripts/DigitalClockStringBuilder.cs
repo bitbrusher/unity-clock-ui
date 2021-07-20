@@ -52,31 +52,45 @@ public class DigitalClockStringBuilder
         var minutes = _timeManager.GetMinutes();
         var integerMinutes = Mathf.FloorToInt(minutes);
 
-        var isAfternoon = integerHour >= 12;
-        if (_is12HourClock && isAfternoon)
+        _isAfternoon = integerHour >= 12;
+
+        TryToAdjustHourFor12HourClock(ref integerHour);
+
+        var changed = integerHour != _currentHour || integerMinutes != _currentMinutes;
+
+        _currentHour = integerHour;
+        _currentMinutes = integerMinutes;
+        return changed;
+    }
+
+    private void TryToAdjustHourFor12HourClock(ref int integerHour)
+    {
+        if (!_is12HourClock)
+        {
+            return;
+        }
+
+        if (_isAfternoon)
         {
             integerHour -= 12;
         }
 
-        var changed = integerHour != _currentHour || integerMinutes != _currentMinutes;
-        changed |= _is12HourClock && isAfternoon != _isAfternoon;
-
-        _currentHour = integerHour;
-        _currentMinutes = integerMinutes;
-        _isAfternoon = isAfternoon;
-        return changed;
+        if (integerHour == 0)
+        {
+            integerHour = 12;
+        }
     }
 
     private void UpdateClockTimeInStringBuilder(StringBuilder stringBuilder)
     {
-        var decimalHour = _currentHour / 10;
-        var unitHour = _currentHour % 10;
-        var decimalMinutes = _currentMinutes / 10;
-        var unitMinutes = _currentMinutes % 10;
+        var tenthsHour = _currentHour / 10;
+        var onesHour = _currentHour % 10;
+        var tenthsMinutes = _currentMinutes / 10;
+        var onesMinutes = _currentMinutes % 10;
 
-        stringBuilder[0] = (char) ('0' + decimalHour);
-        stringBuilder[1] = (char) ('0' + unitHour);
-        stringBuilder[3] = (char) ('0' + decimalMinutes);
-        stringBuilder[4] = (char) ('0' + unitMinutes);
+        stringBuilder[0] = (char) ('0' + tenthsHour);
+        stringBuilder[1] = (char) ('0' + onesHour);
+        stringBuilder[3] = (char) ('0' + tenthsMinutes);
+        stringBuilder[4] = (char) ('0' + onesMinutes);
     }
 }
