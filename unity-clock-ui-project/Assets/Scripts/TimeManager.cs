@@ -18,6 +18,11 @@ public class TimeManager : ITimeManager
         _24HourDigitalClockStringBuilder = new DigitalClockStringBuilder(this, false);
     }
 
+    public TimeManagerConfiguration GetConfiguration()
+    {
+        return _timeManagerConfiguration;
+    }
+    
     public void Update(float deltaTime)
     {
         _totalTime += deltaTime;
@@ -34,6 +39,11 @@ public class TimeManager : ITimeManager
         return (_currentTime * HoursInDay * MinutesInHour / _timeManagerConfiguration.dayDuration) % MinutesInHour;
     }
 
+    public float GetSunsetHour()
+    {
+        return (_timeManagerConfiguration.sunriseHour + (1 - _timeManagerConfiguration.nightDuration) * HoursInDay) % HoursInDay;
+    }
+
     public DigitalClockStringBuilderResult Get24HourDigitalClock()
     {
         return _24HourDigitalClockStringBuilder.GetDisplayText();
@@ -42,10 +52,5 @@ public class TimeManager : ITimeManager
     public DigitalClockStringBuilderResult Get12HourDigitalClock()
     {
         return _12HourDigitalClockStringBuilder.GetDisplayText();
-    }
-
-    public float GetSunsetHour()
-    {
-        return (_timeManagerConfiguration.sunriseHour + (1 - _timeManagerConfiguration.nightDuration) * HoursInDay) % HoursInDay;
     }
 }
