@@ -1,7 +1,7 @@
 public class TimeManager : ITimeManager
 {
-    private const int HoursInDay = 24;
-    private const int MinutesInHour = 60;
+    public const int HoursInDay = 24;
+    public const int MinutesInHour = 60;
 
     private float _totalTime = 0;
     private float _currentTime = 0;
