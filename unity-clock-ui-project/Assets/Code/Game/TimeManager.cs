@@ -1,3 +1,5 @@
+using Code.Game;
+
 public class TimeManager : ITimeManager
 {
     public const int HoursInDay = 24;
